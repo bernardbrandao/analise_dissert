@@ -11,14 +11,13 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TCanvas.h>
+#include <TH2.h>
+#include <TStyle.h>
 
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "TString.h"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
 
 class TreeAnalyser {
 public :
@@ -27,6 +26,12 @@ public :
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
+   Double_t zMass = 91.2; //em GeV
+   Double_t muMassMC,jPsiMassMC,ZMassMC;
+   Double_t muMass,muEt,mu1Pt;
+   TLorentzVector muon;                                  
+   TLorentzVector muon1, muon2, muon3, muon4, eletron1, eletron2, dimuon, dilepton, jPsi, Z;
+   Int_t countJPsi = 0;
    // Declaration of leaf types
    Int_t           run;
    Long64_t        event;
@@ -1701,6 +1706,9 @@ void TreeAnalyser::Init(TTree *tree)
    fChain->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
    Notify();
 }
+
+
+
 
 Bool_t TreeAnalyser::Notify()
 {

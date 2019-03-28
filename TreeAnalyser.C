@@ -34,19 +34,19 @@ void TreeAnalyser::Loop()
 
 //////////////////// Criando os Histogramas - Posteriormente estarei criando uma funcao para não precisar declarar todos estes histogramas, diminuindo reduzindo o codigo
 ///////////////
-TH1F *Mu_Number = new TH1F("Mu_Number","Numero de Muons",24,0,12);// Número de Múons X Eventos
+TH1F *Mu_Number = new TH1F("Mu_Number","Numero de Muons",12,0,12);// Número de Múons X Eventos
 Mu_Number->GetXaxis()->SetTitle("N_{#mu}");
 Mu_Number->GetYaxis()->SetTitle("Eventos");
-TH1F *Mu_Number_Trigger = new TH1F("Mu_Number_Trigger","Numero de Muons",24,0,12);// Número de Múons X Eventos
+TH1F *Mu_Number_Trigger = new TH1F("Mu_Number_Trigger","Numero de Muons",12,0,12);// Número de Múons X Eventos
 Mu_Number_Trigger->GetXaxis()->SetTitle("N_{#mu}");
 Mu_Number_Trigger->GetYaxis()->SetTitle("Eventos");
-TH1F *Mu_Number_Global = new TH1F("Mu_Number_Global","Numero de Muons",24,0,12);// Número de Múons X Eventos
+TH1F *Mu_Number_Global = new TH1F("Mu_Number_Global","Numero de Muons",12,0,12);// Número de Múons X Eventos
 Mu_Number_Global->GetXaxis()->SetTitle("N_{#mu}");
 Mu_Number_Global->GetYaxis()->SetTitle("Eventos");
-TH1F *Mu_Number_Soft = new TH1F("Mu_Number_Soft","Numero de Muons",24,0,12);// Número de Múons X Eventos
+TH1F *Mu_Number_Soft = new TH1F("Mu_Number_Soft","Numero de Muons",12,0,12);// Número de Múons X Eventos
 Mu_Number_Soft->GetXaxis()->SetTitle("N_{#mu}");
 Mu_Number_Soft->GetYaxis()->SetTitle("Eventos");
-TH1F *Mu_Number_Tight = new TH1F("Mu_Number_Tight","Numero de Muons",24,0,12);// Número de Múons X Eventos
+TH1F *Mu_Number_Tight = new TH1F("Mu_Number_Tight","Numero de Muons",12,0,12);// Número de Múons X Eventos
 Mu_Number_Tight->GetXaxis()->SetTitle("N_{#mu}");
 Mu_Number_Tight->GetYaxis()->SetTitle("Eventos");
 
@@ -82,15 +82,15 @@ TH1F *Tight_Mu_Phi = new TH1F("Tight_Mu_Phi","Distribucao de #varphi dos Muons "
 Tight_Mu_Phi->GetXaxis()->SetTitle("#varphi");
 Tight_Mu_Phi->GetYaxis()->SetTitle("Eventos");
           
-TH1F *Pt_cut_Pt_Eta = new TH1F("Pt_cut_Pt_Eta","Distribucao de p_{T} dos Muons ",200,0,100);
-Pt_cut_Pt_Eta->GetXaxis()->SetTitle("p_{T} [GeV]");
-Pt_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
-TH1F *Eta_cut_Pt_Eta = new TH1F("Eta_cut_Pt_Eta","Distribucao de #eta dos Muons ",100,-4,4);
-Eta_cut_Pt_Eta->GetXaxis()->SetTitle("#eta");
-Eta_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
-TH1F *Phi_cut_Pt_Eta = new TH1F("Phi_cut_Pt_Eta","Distribucao de #varphi dos Muons ",100,-4,4);
-Phi_cut_Pt_Eta->GetXaxis()->SetTitle("#varphi");
-Phi_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
+TH1F *MuPt_cut_Pt_Eta = new TH1F("MuPt_cut_Pt_Eta","Distribucao de p_{T} dos Muons ",200,0,100);
+MuPt_cut_Pt_Eta->GetXaxis()->SetTitle("p_{T} [GeV]");
+MuPt_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
+TH1F *MuEta_cut_Pt_Eta = new TH1F("MuEta_cut_Pt_Eta","Distribucao de #eta dos Muons ",100,-4,4);
+MuEta_cut_Pt_Eta->GetXaxis()->SetTitle("#eta");
+MuEta_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
+TH1F *MuPhi_cut_Pt_Eta = new TH1F("MuPhi_cut_Pt_Eta","Distribucao de #varphi dos Muons ",100,-4,4);
+MuPhi_cut_Pt_Eta->GetXaxis()->SetTitle("#varphi");
+MuPhi_cut_Pt_Eta->GetYaxis()->SetTitle("Eventos");
 
 /////////////////////////////////////////////////
 TH1F *jPsi_Mass = new TH1F("jPsi_Mass","Distribucao de Massa do J/#psi ",150,0,100);
@@ -101,7 +101,7 @@ TH1F *jPsi_Pt = new TH1F("jPsi_Pt","Distribucao de p_{T} do J/#psi ",200,0,100);
 jPsi_Pt->GetXaxis()->SetTitle("p_{T} [GeV]");
 jPsi_Pt->GetYaxis()->SetTitle("Eventos");
 
-TH1F *jPsi_Mass_cut = new TH1F("jPsi_Mass_cut","Distribucao de Massa do J/#psi ",100,2.6,3.6);
+TH1F *jPsi_Mass_cut = new TH1F("jPsi_Mass_cut","Distribucao de Massa do J/#psi ",10,2.6,3.6);
 jPsi_Mass_cut->GetXaxis()->SetTitle("M_{ J/#psi} [GeV]");
 jPsi_Mass_cut->GetYaxis()->SetTitle("Eventos");
 
@@ -109,7 +109,7 @@ TH1F *jPsi_Pt_cut = new TH1F("jPsi_Pt_cut","Distribucao de p_{T} do J/#psi ",200
 jPsi_Pt_cut->GetXaxis()->SetTitle("p_{T} [GeV]");
 jPsi_Pt_cut->GetYaxis()->SetTitle("Eventos");
 
-TH1F *jPsi_Mass_cut_Pt = new TH1F("jPsi_Mass_cut_Pt","Distribucao de Massa do J/#psi ",100,2.6,3.6);
+TH1F *jPsi_Mass_cut_Pt = new TH1F("jPsi_Mass_cut_Pt","Distribucao de Massa do J/#psi ",10,2.6,3.6);
 jPsi_Mass_cut_Pt->GetXaxis()->SetTitle("M_{ J/#psi} [GeV]");
 jPsi_Mass_cut_Pt->GetYaxis()->SetTitle("Eventos");
 
@@ -117,7 +117,7 @@ TH1F *jPsi_Pt_cut_Pt = new TH1F("jPsi_Pt_cut_Pt","Distribucao de p_{T} do J/#psi
 jPsi_Pt_cut_Pt->GetXaxis()->SetTitle("p_{T} [GeV]");
 jPsi_Pt_cut_Pt->GetYaxis()->SetTitle("Eventos");
 
-TH1F *jPsi_Mass_window = new TH1F("jPsi_Mass_window","Distribucao de Massa do J/#psi ",100,2.6,3.6);
+TH1F *jPsi_Mass_window = new TH1F("jPsi_Mass_window","Distribucao de Massa do J/#psi ",10,2.6,3.6);
 jPsi_Mass_window->GetXaxis()->SetTitle("M_{ J/#psi} [GeV]");
 jPsi_Mass_window->GetYaxis()->SetTitle("Eventos");
 
@@ -241,8 +241,21 @@ THStack *hs = new THStack("hs","Histograma");
 Int_t countJPsi = 0;
 TH1F *jPsi_Event = new TH1F("jPsi_Event","Numero de J/#psi ",10,0,10);// 
 
+//Tentativa do grafico 2D
+TH2F *delta_phi1 = new TH2F("delta_phi1","delta_phi1", 120, 60, 120, 40, 0, 4);
+delta_phi1->GetXaxis()->SetTitle("Z #rightarrow J/#psi #mu^{+}#mu^{-} [GeV]");
+delta_phi1->GetYaxis()->SetTitle("#Delta #phi(J/#psi #mu^{Z}_{1})");
+TH2F *delta_phi2 = new TH2F("delta_phi2","delta_phi2", 120, 60, 120, 40, 0, 4);
+delta_phi2->GetXaxis()->SetTitle("Z #rightarrow J/#psi #mu^{+} #mu^{-} [GeV]");
+delta_phi2->GetYaxis()->SetTitle("#Delta #phi(J/#psi #mu^{Z}_{1})");
 
-////////////////////
+//Pt leading e subleading muons
+TH1F *leading_muons = new TH1F("leading_muons","Distribucao de p_{T} dos leading_muons ",200,0,100);
+leading_muons->GetXaxis()->SetTitle("p_{T} [GeV]");
+leading_muons->GetYaxis()->SetTitle("Eventos");
+TH1F *subleading_muons = new TH1F("subleading_muons","Distribucao de p_{T} dos subleading_muons ",200,0,100);
+subleading_muons->GetXaxis()->SetTitle("p_{T} [GeV]");
+subleading_muons->GetYaxis()->SetTitle("Eventos");
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -265,10 +278,14 @@ TH1F *jPsi_Event = new TH1F("jPsi_Event","Numero de J/#psi ",10,0,10);//
       Int_t count2 = 0;
       Int_t count3 = 0;
       Int_t count4 = 0;
+      Int_t indice1 = 0;
+      Int_t indice2 = 0;
+
+      int nGoodMuons = 0; //number of good muons
 
       Mu_Number->Fill(nMu);
       if(!(goodTriggerEvt1 || goodTriggerEvt2 || goodTriggerEvt3))continue;
-      std::cout << "Passaram " << nMu << " por um dos tres Triggers" << endl;
+      //std::cout << "Passaram " << nMu << " por um dos tres Triggers" << endl;
       Mu_Number_Trigger->Fill(nMu);
       for(Int_t i = 0; i < nMu ; i++){
         if(((muType->at(i) >> 1) & 1) == 1){ //selecionando global muons
@@ -276,15 +293,12 @@ TH1F *jPsi_Event = new TH1F("jPsi_Event","Numero de J/#psi ",10,0,10);//
           Global_Mu_Pt->Fill(muPt->at(i));
           Global_Mu_Eta->Fill(muEta->at(i));
           Global_Mu_Phi->Fill(muPhi->at(i));
-          if(muIDbit->at(i) == 3){//selecionando soft muons
+//          if(muIDbit->at(i) == 3){//selecionando soft muons
+          if(((muIDbit->at(i) >> 3) & 1) == 1){//selecionando soft muons
             count2 = count2 + 1;
             Soft_Mu_Pt->Fill(muPt->at(i));
             Soft_Mu_Eta->Fill(muEta->at(i));
             Soft_Mu_Phi->Fill(muPhi->at(i));         
-          }
-          if(muIDbit->at(i) == 2){
-            count3 = count3 + 1;
-            std::cout << "Temos muons Tight" << endl;
           }
           if(((muIDbit->at(i) >> 2) & 1) == 1){//selecionando tight muons
             count3 = count3 + 1;
@@ -294,95 +308,109 @@ TH1F *jPsi_Event = new TH1F("jPsi_Event","Numero de J/#psi ",10,0,10);//
           }
         }
       }//for i
-      std::cout << "---Numero de Global muons: " << count1 << endl;
-      std::cout << "------Numero de Soft muons: " << count1 << endl;
-      std::cout << "---------Numero de Tight muons: " << count1 << endl;
+      //std::cout << "---Numero de Global muons: " << count1 << endl;
+      //std::cout << "------Numero de Soft muons: " << count1 << endl;
+      //std::cout << "---------Numero de Tight muons: " << count1 << endl;
       Mu_Number_Global->Fill(count1);
       Mu_Number_Soft->Fill(count2);
       Mu_Number_Tight->Fill(count3);
 
 //////////////////////////
-      if(count2 >= 2){//Pelo menos 2 global muons
-        for(Int_t i = 0; i < nMu; i++){
-          if(!(((muIDbit->at(i) >> 1) & 1) == 1))continue;//global
-          if(!((muIDbit->at(i) == 3)))continue;//soft
-          if(!( muPt->at(i) >= 3.5 &&  (abs(muEta->at(i))< 2.4)))continue;
-          Pt_cut_Pt_Eta->Fill(muPt->at(i));//muon
-          Eta_cut_Pt_Eta->Fill(muEta->at(i));//muon
-          Phi_cut_Pt_Eta->Fill(muPhi->at(i));//muon
-          for(Int_t k = i+1; k < nMu; k++){
-            if(!(((muIDbit->at(k) >> 1) & 1) == 1))continue;//global
-            if(!((muIDbit->at(k) == 3)))continue;//soft
-            muon1.SetPtEtaPhiE(muPt->at(i),muEta->at(i),muPhi->at(i),muEn->at(i));
-            muon2.SetPtEtaPhiE(muPt->at(k),muEta->at(k),muPhi->at(k),muEn->at(k));
-            if(!((muon1.Pt() > 3.5 && (abs(muon1.Eta())< 2.4)) && (muon2.Pt() > 3.5 && (abs(muon2.Eta())< 2.4))))continue;
-            if((muCharge->at(i) != muCharge->at(k))){
-              jPsi = muon1 + muon2;
-              jPsi_Mass->Fill(jPsi.M());
-              jPsi_Pt->Fill(jPsi.Pt());
-              if(!(((abs(jPsi.M()) - 3.0969)) < 0.5))continue;
-                jPsi_Mass_cut->Fill(jPsi.M());
-                jPsi_Pt_cut->Fill(jPsi.Pt());
-                if(!((jPsi.Pt()) > 8.5))continue;
-                  jPsi_Mass_cut_Pt->Fill(jPsi.M());
-                  jPsi_Pt_cut_Pt->Fill(jPsi.Pt());
-                  if(!(jPsi.M() > 2.6 && jPsi.M() < 3.6))continue;
-                  jPsi_Mass_window->Fill(jPsi.M());
-                  jPsi_Pt_window->Fill(jPsi.Pt());
-                  countJPsi = countJPsi +1;
-            }//charge
-          }//for k
-        }//for i
-        jPsi_Event->Fill(countJPsi); 
-        countJPsi = 0;
-        if(count3 >= 2){
-          for(Int_t i = 0; i < nMu; i++){
-            for(Int_t k = i+1; k < nMu; k++){
-              if(!(((muIDbit->at(i) >> 2) & 1) == 1) && (((muIDbit->at(k) >> 2) & 1) == 1))continue;//Tight muons
-              muon3.SetPtEtaPhiE(muPt->at(i),muEta->at(i),muPhi->at(i),muEn->at(i));
-              muon4.SetPtEtaPhiE(muPt->at(k),muEta->at(k),muPhi->at(k),muEn->at(k));
-              dimuon = muon3 + muon4;
-              Z = jPsi + dimuon;
-              if((muon3 != muon1) && (muon4 != muon1) && (muon3 != muon2) && (muon4 != muon2)){
-                Z_mass_test->Fill(Z.M());
-                Z_Pt_test->Fill(Z.Pt());
-                dimuon_mass_test->Fill(dimuon.M());
-                dimuon_Pt_test->Fill(dimuon.Pt());
-                if(!(muCharge->at(i) != muCharge->at(k)))continue;
-                  Z_mass_mc->Fill(Z.M());
-                  Z_Pt_mc->Fill(Z.Pt());
-                  dimuon_mass_mc->Fill(dimuon.M());
-                  dimuon_Pt_mc->Fill(dimuon.Pt());
-                  if(!( ((abs(muon3.Eta())) < 2.4) && ((abs(muon4.Eta())) < 2.4) ))continue;
-                    Z_mass_mc_Eta->Fill(Z.M());
-                    Z_Pt_mc_Eta->Fill(Z.Pt());
-                    dimuon_mass_mc_Eta->Fill(dimuon.M());
-                    dimuon_Pt_mc_Eta->Fill(dimuon.Pt());
-                    if(!(((muon3.Pt() > 30) && (muon4.Pt() > 15))||((muon4.Pt() > 30) && (muon3.Pt() > 15))))continue;
-                      std::cout<<"-----------------Os valores de pt são: " << muon3.Pt()<< " e "  <<  muon4.Pt() <<endl;
-                      std::cout<<"--------- " << muon1.Pt()<<" ----------- " << muon2.Pt() << " A massa do dimuon e "<< dimuon.M() <<endl ;
-                      Z_mass_mc_Eta_Pt->Fill(Z.M());
-                      Z_Pt_mc_Eta_Pt->Fill(Z.Pt());
-                      dimuon_mass_mc_Eta_Pt->Fill(dimuon.M());
-                      dimuon_Pt_mc_Eta_Pt->Fill(dimuon.Pt());
-                      if(!(dimuon.M() < 80))continue;
-                        Z_mass_cut_dimuon->Fill(Z.M());
-                        Z_Pt_cut_dimuon->Fill(Z.Pt());
-                        dimuon_mass_cut_dimuon->Fill(dimuon.M());
-                        dimuon_Pt_cut_dimuon->Fill(dimuon.Pt());
-                        if(!((abs(Z.M()-91.1876)) < 25))continue;
-                          Z_mass_final->Fill(Z.M());
-                          Z_Pt_final->Fill(Z.Pt());
-                          dimuon_mass_final->Fill(dimuon.M());
-                          dimuon_Pt_final->Fill(dimuon.Pt());
-              }                         
-            }//for k
-          } //for i
-        } // if count 3       
-      }//if count2
+      if(!((nMu >= 4)||(nMu>=2 && nEle >=2)))continue;//posso inserir um "|| nMu>=2 && nEle >=2"
+      if(!(count2 >= 2))continue;//Pelo menos 2 soglobal muons
+      for(Int_t i = 0; i < nMu; i++){
+        if(!(((muIDbit->at(i) >> 1) & 1) == 1))continue;//global
+        //if(!((muIDbit->at(i) == 3)))continue;//soft
+        if(!(((muIDbit->at(i) >> 3) & 1) == 1))continue;//selecionando soft muons
+        if(!( muPt->at(i) >= 3.5 &&  (abs(muEta->at(i))< 2.4)))continue;
+        MuPt_cut_Pt_Eta->Fill(muPt->at(i));//muon
+        MuEta_cut_Pt_Eta->Fill(muEta->at(i));//muon
+        MuPhi_cut_Pt_Eta->Fill(muPhi->at(i));//muon
+        for(Int_t k = i+1; k < nMu; k++){
+          if(!(((muIDbit->at(k) >> 1) & 1) == 1))continue;//global
+          if(!(((muIDbit->at(k) >> 3) & 1) == 1))continue;//selecionando soft muons
+          muon1.SetPtEtaPhiE(muPt->at(i),muEta->at(i),muPhi->at(i),muEn->at(i));
+          muon2.SetPtEtaPhiE(muPt->at(k),muEta->at(k),muPhi->at(k),muEn->at(k));
+          if(!((muon1.Pt() > 3.5 && (abs(muon1.Eta())< 2.4)) && (muon2.Pt() > 3.5 && (abs(muon2.Eta())< 2.4))))continue;
+          if((muCharge->at(i) != muCharge->at(k))){
+            jPsi = muon1 + muon2;
+            jPsi_Mass->Fill(jPsi.M());
+            jPsi_Pt->Fill(jPsi.Pt());
+            if(!(((abs(jPsi.M()) - 3.0969)) < 0.5))continue;
+            jPsi_Mass_cut->Fill(jPsi.M());
+            jPsi_Pt_cut->Fill(jPsi.Pt());
+            if(!((jPsi.Pt()) > 8.5))continue;
+            jPsi_Mass_cut_Pt->Fill(jPsi.M());
+            jPsi_Pt_cut_Pt->Fill(jPsi.Pt());
+            if(!(jPsi.M() > 2.6 && jPsi.M() < 3.6))continue;
+            jPsi_Mass_window->Fill(jPsi.M());
+            jPsi_Pt_window->Fill(jPsi.Pt());
+            countJPsi = countJPsi +1;
+            indice1 = i;
+            indice2 = k;
+            nGoodMuons++;
+          }//charge
+        }//for k
+      }//for i
+      if(!(nGoodMuons > 0 ))continue;      
+      if(!(count3 >= 2))continue;
+      cout << " \t\t nMu = "  << nMu ; 
+      for(Int_t i = 0; i < nMu; i++){
+        cout << " \n\t i = "  << i ; 
+        for(Int_t k = i+1; k < nMu; k++){
+          if (i==indice1||i==indice2||k==indice1||k==indice2) continue; 
+          cout << "\t k = "  << k ; 
+          if(!(((muIDbit->at(i) >> 2) & 1) == 1) && (((muIDbit->at(k) >> 2) & 1) == 1))continue;//Tight muons
+          muon3.SetPtEtaPhiE(muPt->at(i),muEta->at(i),muPhi->at(i),muEn->at(i));
+          muon4.SetPtEtaPhiE(muPt->at(k),muEta->at(k),muPhi->at(k),muEn->at(k));
+          dimuon = muon3 + muon4;
+          Z = jPsi + dimuon;
+          Z_mass_test->Fill(Z.M());
+          Z_Pt_test->Fill(Z.Pt());
+          dimuon_mass_test->Fill(dimuon.M());
+          dimuon_Pt_test->Fill(dimuon.Pt());
+          if(!(muCharge->at(i) != muCharge->at(k)))continue;
+          Z_mass_mc->Fill(Z.M());
+          Z_Pt_mc->Fill(Z.Pt());
+          dimuon_mass_mc->Fill(dimuon.M());
+          dimuon_Pt_mc->Fill(dimuon.Pt());
+          if(!( ((abs(muon3.Eta())) < 2.4) && ((abs(muon4.Eta())) < 2.4) ))continue;
+          Z_mass_mc_Eta->Fill(Z.M());
+          Z_Pt_mc_Eta->Fill(Z.Pt());
+          dimuon_mass_mc_Eta->Fill(dimuon.M());
+          dimuon_Pt_mc_Eta->Fill(dimuon.Pt());
+          if(!(((muon3.Pt() > 30) && (muon4.Pt() > 15))||((muon4.Pt() > 30) && (muon3.Pt() > 15))))continue;
+          std::cout<<"\n-----------------Os valores de pt são: " << muon3.Pt()<< " e "  <<  muon4.Pt() <<endl;
+          std::cout<<"\n--------- " << muon1.Pt()<<" ----------- " << muon2.Pt() << " A massa do dimuon e "<< dimuon.M() <<endl ;
+          Z_mass_mc_Eta_Pt->Fill(Z.M());
+          Z_Pt_mc_Eta_Pt->Fill(Z.Pt());
+          dimuon_mass_mc_Eta_Pt->Fill(dimuon.M());
+          dimuon_Pt_mc_Eta_Pt->Fill(dimuon.Pt());
+          if(!(dimuon.M() < 80))continue;
+          Z_mass_cut_dimuon->Fill(Z.M());
+          Z_Pt_cut_dimuon->Fill(Z.Pt());
+          dimuon_mass_cut_dimuon->Fill(dimuon.M());
+          dimuon_Pt_cut_dimuon->Fill(dimuon.Pt());
+          if(!((abs(Z.M()-91.1876)) < 25))continue;
+          if(muon3.Pt() > muon4.Pt()){//if (encher histograma de leading e subleading muons)
+            delta_phi1->Fill( Z.M(), (abs(jPsi.Phi()- muon3.Phi())));///////////
+            delta_phi2->Fill( Z.M(), (abs(jPsi.Phi()- muon4.Phi())));///////////                  
+            leading_muons->Fill(muon3.Pt());
+            subleading_muons->Fill(muon4.Pt());
+          }else{
+            delta_phi1->Fill( Z.M(), (abs(jPsi.Phi()- muon4.Phi())));///////////
+            delta_phi2->Fill( Z.M(), (abs(jPsi.Phi()- muon3.Phi())));///////////                    
+            leading_muons->Fill(muon4.Pt());
+            subleading_muons->Fill(muon3.Pt());
+          }
+          Z_mass_final->Fill(Z.M());
+          Z_Pt_final->Fill(Z.Pt());
+          dimuon_mass_final->Fill(dimuon.M());
+          dimuon_Pt_final->Fill(dimuon.Pt());
+        }//for k
+        cout << " " << endl;
+      } //for i
 //////////////////////////////////////////////////////////
-
-
-
    }
+//   histo->Draw("colz");
 }
