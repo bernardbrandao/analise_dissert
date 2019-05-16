@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Mar 13 10:47:46 2019 by ROOT version 6.17/01
+// Wed May 15 14:17:37 2019 by ROOT version 6.17/01
 // from TTree EventTree/Event data (tag V08_00_26_06)
-// found on file: ggtree_mc_ALL.root
+// found on file: ggtree_mc_New.root
 //////////////////////////////////////////////////////////
 
 #ifndef TreeAnalyser_h
@@ -11,13 +11,14 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include <TCanvas.h>
-#include <TH2.h>
-#include <TStyle.h>
 
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "TString.h"
+#include "vector"
+#include "vector"
+#include "vector"
+#include "vector"
 
 class TreeAnalyser {
 public :
@@ -25,13 +26,168 @@ public :
    Int_t           fCurrent; //!current Tree number in a TChain
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
-
    Double_t zMass = 91.2; //em GeV
    Double_t muMassMC,jPsiMassMC,ZMassMC;
    Double_t muMass,muEt,mu1Pt;
    TLorentzVector muon;                                  
-   TLorentzVector muon1, muon2, muon3, muon4, eletron1, eletron2, dimuon, dilepton, jPsi, Z;
+   TLorentzVector muon1, muon2, muon3, muon4, eletron1, eletron2, dimuon, dieletron, jPsi, Z;
    Int_t countJPsi = 0;
+
+//////////////////// Criando os Histogramas - Posteriormente estarei criando uma funcao para não precisar declarar todos estes histogramas, reduzindo o codigo
+///////////////
+TH1F *Mu_Number = new TH1F("Mu_Number","Numero de Muons",18,0,18);// Número de Múons X Eventos
+TH1F *Mu_Number_Trigger = new TH1F("Mu_Number_Trigger","Numero de Muons",18,0,18);// Número de Múons X Eventos
+TH1F *Mu_Number_Global = new TH1F("Mu_Number_Global","Numero de Muons",18,0,18);// Número de Múons X Eventos
+TH1F *Mu_Number_Soft = new TH1F("Mu_Number_Soft","Numero de Muons",18,0,18);// Número de Múons X Eventos
+TH1F *Mu_Number_Tight = new TH1F("Mu_Number_Tight","Numero de Muons",18,0,18);// Número de Múons X Eventos
+
+///////////////
+TH1F *Trigger_Mu_Pt = new TH1F("Trigger_Mu_Pt","Distribuicao de p_{T} dos Muons ",350,0,350);
+TH1F *Trigger_Mu_Eta = new TH1F("Trigger_Mu_Eta","Distribuicao de #eta dos Muons ",100,-4,4);
+TH1F *Trigger_Mu_Phi = new TH1F("Trigger_Mu_Phi","Distribuicao de #varphi dos Muons ",100,-4,4);
+
+TH1F *Global_Mu_Pt = new TH1F("Global_Mu_Pt","Distribuicao de p_{T} dos Muons ",350,0,350);
+TH1F *Global_Mu_Eta = new TH1F("Global_Mu_Eta","Distribuicao de #eta dos Muons ",100,-4,4);
+TH1F *Global_Mu_Phi = new TH1F("Global_Mu_Phi","Distribuicao de #varphi dos Muons ",100,-4,4);
+
+TH1F *Soft_Mu_Pt = new TH1F("Soft_Mu_Pt","Distribuicao de p_{T} dos Muons ",350,0,350);
+TH1F *Soft_Mu_Eta = new TH1F("Soft_Mu_Eta","Distribuicao de #eta dos Muons ",100,-4,4);
+TH1F *Soft_Mu_Phi = new TH1F("Soft_Mu_Phi","Distribuicao de #varphi dos Muons ",100,-4,4);
+
+TH1F *Tight_Mu_Pt = new TH1F("Tight_Mu_Pt","Distribuicao de p_{T} dos Muons ",350,0,350);
+TH1F *Tight_Mu_Eta = new TH1F("Tight_Mu_Eta","Distribuicao de #eta dos Muons ",100,-4,4);
+TH1F *Tight_Mu_Phi = new TH1F("Tight_Mu_Phi","Distribuicao de #varphi dos Muons ",100,-4,4);
+          
+TH1F *MuPt_cut_Pt_Eta = new TH1F("MuPt_cut_Pt_Eta","Distribuicao de p_{T} dos Muons ",350,0,350);
+TH1F *MuEta_cut_Pt_Eta = new TH1F("MuEta_cut_Pt_Eta","Distribuicao de #eta dos Muons ",100,-4,4);
+TH1F *MuPhi_cut_Pt_Eta = new TH1F("MuPhi_cut_Pt_Eta","Distribuicao de #varphi dos Muons ",100,-4,4);
+
+/////////////////////////////////////////////////
+TH1F *jPsi_Mass = new TH1F("jPsi_Mass","Distribuicao de Massa do J/#psi ",150,0,100);
+TH1F *jPsi_Pt = new TH1F("jPsi_Pt","Distribuicao de p_{T} do J/#psi ",200,0,100);
+TH1F *jPsi_Mass_cut = new TH1F("jPsi_Mass_cut","Distribuicao de Massa do J/#psi ",50,2.6,3.6);
+TH1F *jPsi_Pt_cut = new TH1F("jPsi_Pt_cut","Distribuicao de p_{T} do J/#psi ",200,0,100);
+TH1F *jPsi_Mass_cut_Pt = new TH1F("jPsi_Mass_cut_Pt","Distribuicao de Massa do J/#psi ",50,2.6,3.6);
+TH1F *jPsi_Pt_cut_Pt = new TH1F("jPsi_Pt_cut_Pt","Distribuicao de p_{T} do J/#psi ",200,0,100);
+TH1F *jPsi_Mass_window = new TH1F("jPsi_Mass_window","Distribuicao de Massa do J/#psi ",50,2.6,3.6);
+TH1F *jPsi_Pt_window = new TH1F("jPsi_Pt_window","Distribuicao de p_{T} do J/#psi ",200,0,100);
+TH1F *JPsi_mass_final = new TH1F("JPsi_mass_final","Distribuicao de Massa do J/#psi ",50,2.6,3.6);// Massa do Z
+
+///////////////////////////////////////////////  Z
+
+TH1F *Z_mass_test = new TH1F("Z_mass_test","Distribuicao de Massa do Z",100,0,140);// Massa do Z
+TH1F *Z_Pt_test = new TH1F("Z_Pt_test","Distribuicao de p_{T} do Z ",200,0,100);
+TH1F *Z_mass_mc = new TH1F("Z_mass_mc","Distribuicao de Massa do Z ",100,0,140);// Massa do Z
+TH1F *Z_Pt_mc = new TH1F("Z_Pt_mc","Distribuicao de p_{T} do Z ",200,0,100);
+TH1F *Z_mass_mc_Eta = new TH1F("Z_mass_mc_Eta","Distribuicao de Massa do Z ",100,0,140);// Massa do Z
+TH1F *Z_Pt_mc_Eta = new TH1F("Z_Pt_mc_Eta","Distribuicao de p_{T} do Z ",200,0,100);
+TH1F *Z_mass_mc_Eta_Pt = new TH1F("Z_mass_mc_Eta_Pt","Distribuicao de Massa do Z ",100,0,140);// Massa do Z
+TH1F *Z_Pt_mc_Eta_Pt = new TH1F("Z_Pt_mc_Eta_Pt","Distribuicao de p_{T} do Z ",200,0,100);
+TH1F *Z_mass_cut_dimuon = new TH1F("Z_mass_cut_dimuon","Distribuicao de Massa do Z ",100,0,140);// Massa do Z
+TH1F *Z_Pt_cut_dimuon = new TH1F("Z_Pt_cut_dimuon","Distribuicao de p_{T} do Z",200,0,100);
+TH1F *Z_mass_final = new TH1F("Z_mass_final","Distribuicao de Massa do Z ",50,66,116);// Massa do Z
+TH1F *Z_Pt_final = new TH1F("Z_Pt_final","Distribuicao de p_{T} do Z ",200,0,140);
+///////////////////////////////////////////////  dimuon
+
+TH1F *dimuon_mass_test = new TH1F("dimuon_mass_test","Distribuicao de Massa do dimuon ",100,0,140);// Massa do dimuon
+TH1F *dimuon_Pt_test = new TH1F("dimuon_Pt_test","Distribuicao de p_{T} do dimuon ",200,0,100);
+TH1F *dimuon_mass_mc = new TH1F("dimuon_mass_mc","Distribuicao de Massa do dimuon ",100,0,140);// Massa do dimuon
+TH1F *dimuon_Pt_mc = new TH1F("dimuon_Pt_mc","Distribuicao de p_{T} do dimuon ",200,0,100);
+TH1F *dimuon_mass_mc_Eta = new TH1F("dimuon_mass_mc_Eta","Distribuicao de Massa do dimuon",100,0,140);// Massa do dimuon
+TH1F *dimuon_Pt_mc_Eta = new TH1F("dimuon_Pt_mc_Eta","Distribuicao de p_{T} do dimuon ",200,0,100);
+TH1F *dimuon_mass_mc_Eta_Pt = new TH1F("dimuon_mass_mc_Eta_Pt","Distribuicao de Massa do dimuon ",100,0,140);// Massa do dimuon
+TH1F *dimuon_Pt_mc_Eta_Pt = new TH1F("dimuon_Pt_mc_Eta_Pt","Distribuicao de p_{T} do dimuon ",200,0,100);
+TH1F *dimuon_mass_cut_dimuon = new TH1F("dimuon_mass_cut_dimuon","Distribuicao de Massa do dimuon ",160,0,80);// Massa do dimuon
+TH1F *dimuon_Pt_cut_dimuon = new TH1F("dimuon_Pt_cut_dimuon","Distribuicao de p_{T} do dimuon ",200,0,100);
+TH1F *dimuon_mass_final = new TH1F("dimuon_mass_final","Distribuicao de Massa do dimuon ",100,0,80);// Massa do dimuon
+TH1F *dimuon_Pt_final = new TH1F("dimuon_Pt_final","Distribuicao de p_{T} do dimuon ",200,0,100);
+///////////////
+/////////       Histogramas para as informacoes dos geradores      ///////////////
+TH1F *Gen_mass = new TH1F("Gen_mass","Distribuicao de Massa do Gerador ",100,0,130);// Massa do gerador
+TH1F *Gen_mass_Z = new TH1F("Gen_mass_Z","Distribuicao de Massa do Z ",100,70,130);// Massa do Z
+///////////////
+TH1F *Gen_mass_JPsi = new TH1F("Gen_mass_JPsi","Distribuicao de Massa do J/#psi ",100,2.6,3.6);// Massa do JPsi
+
+THStack *hs = new THStack("hs","Histograma");
+///////////////contador e histograma para verificar se estou coletando mais de 1 J/psi no mesmo evento
+
+TH1F *jPsi_Event = new TH1F("jPsi_Event","Numero de J/#psi por evento ",10,0,10);// 
+TH1F *Z_Event = new TH1F("Z_Event","Numero de Z por evento ",10,0,10);//
+TH1F *Z_Event_2 = new TH1F("Z_Event_2","Numero de Z por evento ",10,0,10);//
+
+//Tentativa do grafico 2D
+TH2F *delta_phi1 = new TH2F("delta_phi1","delta_phi1", 58, 60, 120, 35, 0, 3.5);
+TH2F *delta_phi2 = new TH2F("delta_phi2","delta_phi2", 58, 60, 120, 35, 0, 3.5);
+
+//Pt - muon3, muon4, muon1, muon2
+TH1F *Pt_muon3 = new TH1F("Pt_muon3","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon4 = new TH1F("Pt_muon4","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon3_eta_pt = new TH1F("Pt_muon3_eta_pt","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon4_eta_pt = new TH1F("Pt_muon4_eta_pt","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon3_mass_ref = new TH1F("Pt_muon3_mass_ref","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon4_mass_ref = new TH1F("Pt_muon4_mass_ref","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon3_jpsi_pt = new TH1F("Pt_muon3_jpsi_pt","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon4_jpsi_pt = new TH1F("Pt_muon4_jpsi_pt","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon3_window = new TH1F("Pt_muon3_window","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon4_window = new TH1F("Pt_muon4_window","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon3_true = new TH1F("Pt_muon3_true","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon4_true = new TH1F("Pt_muon4_true","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1 = new TH1F("Pt_muon1","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2 = new TH1F("Pt_muon2","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_tight = new TH1F("Pt_muon1_tight","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2_tight = new TH1F("Pt_muon2_tight","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_charge = new TH1F("Pt_muon1_charge","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2_charge = new TH1F("Pt_muon2_charge","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_eta = new TH1F("Pt_muon1_eta","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2_eta = new TH1F("Pt_muon2_eta","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_pt = new TH1F("Pt_muon1_pt","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2_pt = new TH1F("Pt_muon2_pt","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_small = new TH1F("Pt_muon1_small","Distribuicao de p_{T} dos muons ",300,0,150);
+TH1F *Pt_muon2_small = new TH1F("Pt_muon2_small","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_mass_ref = new TH1F("Pt_muon1_mass_ref","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon2_mass_ref = new TH1F("Pt_muon2_mass_ref","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *Pt_muon1_true = new TH1F("Pt_muon1_true","Distribuicao de p_{T} dos muon ",300,0,150);
+TH1F *Pt_muon2_true = new TH1F("Pt_muon2_true","Distribuicao de p_{T} dos muons ",300,0,150);
+
+TH1F *En_muon3 = new TH1F("En_muon3","Distribuicao da Energia dos muon ",300,0,150);
+TH1F *En_muon4 = new TH1F("En_muon4","Distribuicao da Energia dos muon ",300,0,150);
+
+TH1F *En_muon1 = new TH1F("En_muon1","Distribuicao da Energia dos muon ",300,0,150);
+TH1F *En_muon2 = new TH1F("En_muon2","Distribuicao da Energia dos muon ",300,0,150);
+
+///Apenas um teste para verificar se os muons mais energeticos são os correspondentes ao leading e subleading
+
+TH1F *En_muon3_v = new TH1F("En_muon3_v","Distribuicao da Energia dos muon ",300,0,150);
+TH1F *En_muon4_v = new TH1F("En_muon4_v","Distribuicao da Energia dos muon ",300,0,150);
+TH1F *En_muon1_v = new TH1F("En_muon1_v","Distribuicao da Energia dos muon ",300,0,150);
+TH1F *En_muon2_v = new TH1F("En_muon2_v","Distribuicao da Energia dos muon ",300,0,150);
+
+TH1F *hist_D0 = new TH1F("hist_D0","Distribuicao de d_{xy} dos muons",20,-1,1);
+
+TH1F *hist_Dz = new TH1F("hist_Dz","Distribuicao de d_{z} dos muons",400,-20,20);
+
+TH1F *hist_D0_cut = new TH1F("hist_D0_cut","Distribuicao de d_{xy} dos muons",20,-1,1);
+
+TH1F *hist_Dz_cut = new TH1F("hist_Dz_cut","Distribuicao de d_{z} dos muons",400,-20,20);
+
+TH1F *teste_Chi2 = new TH1F("teste_Chi2","Distribuicao muChi2NDF",1000,-500,500);
+
+TH1F *teste_Chi2_pos = new TH1F("teste_Chi2_pos","Distribuicao muChi2LocalPosition",1000,-500,500);
+
+
    // Declaration of leaf types
    Int_t           run;
    Long64_t        event;
@@ -445,6 +601,53 @@ public :
    vector<vector<int> > *AK8puppiSDSJCharge;
    vector<vector<int> > *AK8puppiSDSJFlavour;
    vector<vector<float> > *AK8puppiSDSJCSV;
+   Int_t           ndiMu;
+   vector<int>     *diMuIndex1;
+   vector<int>     *diMuIndex2;
+   vector<int>     *diMuVtxIsValid;
+   vector<float>   *diMuVtx;
+   vector<float>   *diMuVty;
+   vector<float>   *diMuVtz;
+   vector<float>   *diMuChi2;
+   vector<int>     *diMuNDF;
+   vector<float>   *diMuVtxProb;
+   vector<float>   *diMu_CosAlpha;
+   vector<float>   *diMu_Lxy;
+   vector<float>   *diMu_Rxy;
+   vector<float>   *diMu_eLxy;
+   vector<float>   *diMu_SLxy;
+   vector<float>   *diMu_ctau;
+   vector<float>   *diMu_ctauErr;
+   vector<int>     *diMuVtxIsValid_KinFit;
+   vector<float>   *diMuMass_KinFit;
+   vector<float>   *diMuPx_KinFit;
+   vector<float>   *diMuPy_KinFit;
+   vector<float>   *diMuPz_KinFit;
+   vector<float>   *diMuVtx_KinFit;
+   vector<float>   *diMuVty_KinFit;
+   vector<float>   *diMuVtz_KinFit;
+   vector<float>   *diMuChi2_KinFit;
+   vector<int>     *diMuNDF_KinFit;
+   vector<float>   *diMuVtxProb_KinFit;
+   vector<float>   *diMuCosAlpha_KinFit;
+   vector<float>   *diMu_Lxy_KinFit;
+   vector<float>   *diMu_Rxy_KinFit;
+   vector<float>   *diMu_eLxy_KinFit;
+   vector<float>   *diMu_SLxy_KinFit;
+   vector<float>   *diMu_ctau_KinFit;
+   vector<float>   *diMu_ctauErr_KinFit;
+   vector<float>   *diMu_Mmu1_KinFit;
+   vector<float>   *diMu_Mmu2_KinFit;
+   vector<float>   *diMu_mu1Px_KinFit;
+   vector<float>   *diMu_mu1Py_KinFit;
+   vector<float>   *diMu_mu1Pz_KinFit;
+   vector<float>   *diMu_mu2Px_KinFit;
+   vector<float>   *diMu_mu2Py_KinFit;
+   vector<float>   *diMu_mu2Pz_KinFit;
+   vector<float>   *diMu_mu1En_KinFit;
+   vector<float>   *diMu_mu2En_KinFit;
+   vector<int>     *diMu_mu1Charge_KinFit;
+   vector<int>     *diMu_mu2Charge_KinFit;
 
    // List of branches
    TBranch        *b_run;   //!
@@ -859,6 +1062,53 @@ public :
    TBranch        *b_AK8puppiSDSJCharge;   //!
    TBranch        *b_AK8puppiSDSJFlavour;   //!
    TBranch        *b_AK8puppiSDSJCSV;   //!
+   TBranch        *b_ndiMu;   //!
+   TBranch        *b_diMuIndex1;   //!
+   TBranch        *b_diMuIndex2;   //!
+   TBranch        *b_diMuVtxIsValid;   //!
+   TBranch        *b_diMuVtx;   //!
+   TBranch        *b_diMuVty;   //!
+   TBranch        *b_diMuVtz;   //!
+   TBranch        *b_diMuChi2;   //!
+   TBranch        *b_diMuNDF;   //!
+   TBranch        *b_diMuVtxProb;   //!
+   TBranch        *b_diMu_CosAlpha;   //!
+   TBranch        *b_diMu_Lxy;   //!
+   TBranch        *b_diMu_Rxy;   //!
+   TBranch        *b_diMu_eLxy;   //!
+   TBranch        *b_diMu_SLxy;   //!
+   TBranch        *b_diMu_ctau;   //!
+   TBranch        *b_diMu_ctauErr;   //!
+   TBranch        *b_diMuVtxIsValid_KinFit;   //!
+   TBranch        *b_diMuMass_KinFit;   //!
+   TBranch        *b_diMuPx_KinFit;   //!
+   TBranch        *b_diMuPy_KinFit;   //!
+   TBranch        *b_diMuPz_KinFit;   //!
+   TBranch        *b_diMuVtx_KinFit;   //!
+   TBranch        *b_diMuVty_KinFit;   //!
+   TBranch        *b_diMuVtz_KinFit;   //!
+   TBranch        *b_diMuChi2_KinFit;   //!
+   TBranch        *b_diMuNDF_KinFit;   //!
+   TBranch        *b_diMuVtxProb_KinFit;   //!
+   TBranch        *b_diMuCosAlpha_KinFit;   //!
+   TBranch        *b_diMu_Lxy_KinFit;   //!
+   TBranch        *b_diMu_Rxy_KinFit;   //!
+   TBranch        *b_diMu_eLxy_KinFit;   //!
+   TBranch        *b_diMu_SLxy_KinFit;   //!
+   TBranch        *b_diMu_ctau_KinFit;   //!
+   TBranch        *b_diMu_ctauErr_KinFit;   //!
+   TBranch        *b_diMu_Mmu1_KinFit;   //!
+   TBranch        *b_diMu_Mmu2_KinFit;   //!
+   TBranch        *b_diMu_mu1Px_KinFit;   //!
+   TBranch        *b_diMu_mu1Py_KinFit;   //!
+   TBranch        *b_diMu_mu1Pz_KinFit;   //!
+   TBranch        *b_diMu_mu2Px_KinFit;   //!
+   TBranch        *b_diMu_mu2Py_KinFit;   //!
+   TBranch        *b_diMu_mu2Pz_KinFit;   //!
+   TBranch        *b_diMu_mu1En_KinFit;   //!
+   TBranch        *b_diMu_mu2En_KinFit;   //!
+   TBranch        *b_diMu_mu1Charge_KinFit;   //!
+   TBranch        *b_diMu_mu2Charge_KinFit;   //!
 
    TreeAnalyser(TTree *tree=0);
    virtual ~TreeAnalyser();
@@ -879,11 +1129,11 @@ TreeAnalyser::TreeAnalyser(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ggtree_mc_ALL.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ggtree_mc_New.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("ggtree_mc_ALL.root");
+         f = new TFile("ggtree_mc_New.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("ggtree_mc_ALL.root:/ggNtuplizer");
+      TDirectory * dir = (TDirectory*)f->Get("ggtree_mc_New.root:/ggNtuplizer");
       dir->GetObject("EventTree",tree);
 
    }
@@ -1286,6 +1536,52 @@ void TreeAnalyser::Init(TTree *tree)
    AK8puppiSDSJCharge = 0;
    AK8puppiSDSJFlavour = 0;
    AK8puppiSDSJCSV = 0;
+   diMuIndex1 = 0;
+   diMuIndex2 = 0;
+   diMuVtxIsValid = 0;
+   diMuVtx = 0;
+   diMuVty = 0;
+   diMuVtz = 0;
+   diMuChi2 = 0;
+   diMuNDF = 0;
+   diMuVtxProb = 0;
+   diMu_CosAlpha = 0;
+   diMu_Lxy = 0;
+   diMu_Rxy = 0;
+   diMu_eLxy = 0;
+   diMu_SLxy = 0;
+   diMu_ctau = 0;
+   diMu_ctauErr = 0;
+   diMuVtxIsValid_KinFit = 0;
+   diMuMass_KinFit = 0;
+   diMuPx_KinFit = 0;
+   diMuPy_KinFit = 0;
+   diMuPz_KinFit = 0;
+   diMuVtx_KinFit = 0;
+   diMuVty_KinFit = 0;
+   diMuVtz_KinFit = 0;
+   diMuChi2_KinFit = 0;
+   diMuNDF_KinFit = 0;
+   diMuVtxProb_KinFit = 0;
+   diMuCosAlpha_KinFit = 0;
+   diMu_Lxy_KinFit = 0;
+   diMu_Rxy_KinFit = 0;
+   diMu_eLxy_KinFit = 0;
+   diMu_SLxy_KinFit = 0;
+   diMu_ctau_KinFit = 0;
+   diMu_ctauErr_KinFit = 0;
+   diMu_Mmu1_KinFit = 0;
+   diMu_Mmu2_KinFit = 0;
+   diMu_mu1Px_KinFit = 0;
+   diMu_mu1Py_KinFit = 0;
+   diMu_mu1Pz_KinFit = 0;
+   diMu_mu2Px_KinFit = 0;
+   diMu_mu2Py_KinFit = 0;
+   diMu_mu2Pz_KinFit = 0;
+   diMu_mu1En_KinFit = 0;
+   diMu_mu2En_KinFit = 0;
+   diMu_mu1Charge_KinFit = 0;
+   diMu_mu2Charge_KinFit = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -1704,11 +2000,55 @@ void TreeAnalyser::Init(TTree *tree)
    fChain->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
    fChain->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
    fChain->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
+   fChain->SetBranchAddress("ndiMu", &ndiMu, &b_ndiMu);
+   fChain->SetBranchAddress("diMuIndex1", &diMuIndex1, &b_diMuIndex1);
+   fChain->SetBranchAddress("diMuIndex2", &diMuIndex2, &b_diMuIndex2);
+   fChain->SetBranchAddress("diMuVtxIsValid", &diMuVtxIsValid, &b_diMuVtxIsValid);
+   fChain->SetBranchAddress("diMuVtx", &diMuVtx, &b_diMuVtx);
+   fChain->SetBranchAddress("diMuVty", &diMuVty, &b_diMuVty);
+   fChain->SetBranchAddress("diMuVtz", &diMuVtz, &b_diMuVtz);
+   fChain->SetBranchAddress("diMuChi2", &diMuChi2, &b_diMuChi2);
+   fChain->SetBranchAddress("diMuNDF", &diMuNDF, &b_diMuNDF);
+   fChain->SetBranchAddress("diMuVtxProb", &diMuVtxProb, &b_diMuVtxProb);
+   fChain->SetBranchAddress("diMu_CosAlpha", &diMu_CosAlpha, &b_diMu_CosAlpha);
+   fChain->SetBranchAddress("diMu_Lxy", &diMu_Lxy, &b_diMu_Lxy);
+   fChain->SetBranchAddress("diMu_Rxy", &diMu_Rxy, &b_diMu_Rxy);
+   fChain->SetBranchAddress("diMu_eLxy", &diMu_eLxy, &b_diMu_eLxy);
+   fChain->SetBranchAddress("diMu_SLxy", &diMu_SLxy, &b_diMu_SLxy);
+   fChain->SetBranchAddress("diMu_ctau", &diMu_ctau, &b_diMu_ctau);
+   fChain->SetBranchAddress("diMu_ctauErr", &diMu_ctauErr, &b_diMu_ctauErr);
+   fChain->SetBranchAddress("diMuVtxIsValid_KinFit", &diMuVtxIsValid_KinFit, &b_diMuVtxIsValid_KinFit);
+   fChain->SetBranchAddress("diMuMass_KinFit", &diMuMass_KinFit, &b_diMuMass_KinFit);
+   fChain->SetBranchAddress("diMuPx_KinFit", &diMuPx_KinFit, &b_diMuPx_KinFit);
+   fChain->SetBranchAddress("diMuPy_KinFit", &diMuPy_KinFit, &b_diMuPy_KinFit);
+   fChain->SetBranchAddress("diMuPz_KinFit", &diMuPz_KinFit, &b_diMuPz_KinFit);
+   fChain->SetBranchAddress("diMuVtx_KinFit", &diMuVtx_KinFit, &b_diMuVtx_KinFit);
+   fChain->SetBranchAddress("diMuVty_KinFit", &diMuVty_KinFit, &b_diMuVty_KinFit);
+   fChain->SetBranchAddress("diMuVtz_KinFit", &diMuVtz_KinFit, &b_diMuVtz_KinFit);
+   fChain->SetBranchAddress("diMuChi2_KinFit", &diMuChi2_KinFit, &b_diMuChi2_KinFit);
+   fChain->SetBranchAddress("diMuNDF_KinFit", &diMuNDF_KinFit, &b_diMuNDF_KinFit);
+   fChain->SetBranchAddress("diMuVtxProb_KinFit", &diMuVtxProb_KinFit, &b_diMuVtxProb_KinFit);
+   fChain->SetBranchAddress("diMuCosAlpha_KinFit", &diMuCosAlpha_KinFit, &b_diMuCosAlpha_KinFit);
+   fChain->SetBranchAddress("diMu_Lxy_KinFit", &diMu_Lxy_KinFit, &b_diMu_Lxy_KinFit);
+   fChain->SetBranchAddress("diMu_Rxy_KinFit", &diMu_Rxy_KinFit, &b_diMu_Rxy_KinFit);
+   fChain->SetBranchAddress("diMu_eLxy_KinFit", &diMu_eLxy_KinFit, &b_diMu_eLxy_KinFit);
+   fChain->SetBranchAddress("diMu_SLxy_KinFit", &diMu_SLxy_KinFit, &b_diMu_SLxy_KinFit);
+   fChain->SetBranchAddress("diMu_ctau_KinFit", &diMu_ctau_KinFit, &b_diMu_ctau_KinFit);
+   fChain->SetBranchAddress("diMu_ctauErr_KinFit", &diMu_ctauErr_KinFit, &b_diMu_ctauErr_KinFit);
+   fChain->SetBranchAddress("diMu_Mmu1_KinFit", &diMu_Mmu1_KinFit, &b_diMu_Mmu1_KinFit);
+   fChain->SetBranchAddress("diMu_Mmu2_KinFit", &diMu_Mmu2_KinFit, &b_diMu_Mmu2_KinFit);
+   fChain->SetBranchAddress("diMu_mu1Px_KinFit", &diMu_mu1Px_KinFit, &b_diMu_mu1Px_KinFit);
+   fChain->SetBranchAddress("diMu_mu1Py_KinFit", &diMu_mu1Py_KinFit, &b_diMu_mu1Py_KinFit);
+   fChain->SetBranchAddress("diMu_mu1Pz_KinFit", &diMu_mu1Pz_KinFit, &b_diMu_mu1Pz_KinFit);
+   fChain->SetBranchAddress("diMu_mu2Px_KinFit", &diMu_mu2Px_KinFit, &b_diMu_mu2Px_KinFit);
+   fChain->SetBranchAddress("diMu_mu2Py_KinFit", &diMu_mu2Py_KinFit, &b_diMu_mu2Py_KinFit);
+   fChain->SetBranchAddress("diMu_mu2Pz_KinFit", &diMu_mu2Pz_KinFit, &b_diMu_mu2Pz_KinFit);
+   fChain->SetBranchAddress("diMu_mu1En_KinFit", &diMu_mu1En_KinFit, &b_diMu_mu1En_KinFit);
+   fChain->SetBranchAddress("diMu_mu2En_KinFit", &diMu_mu2En_KinFit, &b_diMu_mu2En_KinFit);
+   fChain->SetBranchAddress("diMu_mu1Charge_KinFit", &diMu_mu1Charge_KinFit, &b_diMu_mu1Charge_KinFit);
+   fChain->SetBranchAddress("diMu_mu2Charge_KinFit", &diMu_mu2Charge_KinFit, &b_diMu_mu2Charge_KinFit);
    Notify();
 }
-
-
-
 
 Bool_t TreeAnalyser::Notify()
 {
