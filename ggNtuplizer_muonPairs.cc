@@ -42,6 +42,9 @@
 #include "TVector3.h"
 #include <boost/foreach.hpp>
 #include <string>
+//Trigger
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 
 using namespace std;
 
@@ -97,6 +100,7 @@ vector<int>      diMu_mu2Charge_KinFit_;
 /////////////
 vector<float>    jpsi_mass_;
 vector<float>    jpsi_pt_;
+vector<float>    jpsiMuVtxProb_;
 
 void ggNtuplizer::branchesMuonPairs(TTree* tree) {
 
@@ -151,7 +155,7 @@ void ggNtuplizer::branchesMuonPairs(TTree* tree) {
 ////////////////////
   tree->Branch("jpsi_mass",   &jpsi_mass_);
   tree->Branch("jpsi_pt",    &jpsi_pt_);
-
+  tree->Branch("jpsiMuVtxProb",    &jpsiMuVtxProb_);
 }
 
 void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es, math::XYZPoint& pv, reco::Vertex vtx) {
@@ -207,6 +211,7 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
 ////////////////////////
   jpsi_mass_.clear();
   jpsi_pt_.clear();
+  jpsiMuVtxProb_.clear();
   
   ndiMu_ = 0;
 
@@ -224,14 +229,16 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
     return;
   }
 
-  auto goodTriggerEvt1 = true;//inserido
-  auto goodTriggerEvt2 = true;//inserido
-  auto goodTriggerEvt3 = true;//inserido
-  goodTriggerEvt1 = (((HLTEleMuX >> 17) & 1) == 1) ? true : false; // HLT_Mu30_TKMu11_v*    //inserido
-  goodTriggerEvt2 = (((HLTEleMuX >> 19) & 1) == 1) ? true : false; // HLT_IsoMu24_v*   //inserido
-  goodTriggerEvt3 = (((HLTEleMuX >> 22) & 1) == 1) ? true : false; // HLT_TripleMu_12_10_5_v*   //inserido
+//  auto goodTriggerEvt1 = true;//inserido
+//  auto goodTriggerEvt2 = true;//inserido
+//  auto goodTriggerEvt3 = true;//inserido
+//  goodTriggerEvt1 = (((HLTEleMuX >> 17) & 1) == 1) ? true : false; // HLT_Mu30_TKMu11_v*    //inserido
+//  goodTriggerEvt2 = (((HLTEleMuX >> 19) & 1) == 1) ? true : false; // HLT_IsoMu24_v*   //inserido
+//  goodTriggerEvt3 = (((HLTEleMuX >> 22) & 1) == 1) ? true : false; // HLT_TripleMu_12_10_5_v*   //inserido
 
-  if (!(goodTriggerEvt1 || goodTriggerEvt2 || goodTriggerEvt3))continue; //inserido
+//  if (!(goodTriggerEvt1 || goodTriggerEvt2 || goodTriggerEvt3))continue; //inserido
+
+//  if(!((name.find("HLT_Mu30_TkMu11_v")) || (name.find("HLT_IsoMu24_v")) || (name.find("HLT_TripleMu_12_10_5_v") )))continue;
 
   int tmpMu1 = 0;
   int tmpMu2 = 0;
@@ -241,7 +248,7 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
     // Build transientTrack
     const reco::TransientTrack &tt1 = transientTrackBuilder->build(iMu->bestTrack());
 
-    for (edm::View<pat::Muon>::const_iterator jMu = iMu; jMu != muonHandle->end(); ++
+    for (edm::View<pat::Muon>::const_iterator jMu = iMu; jMu != muonHandle->end(); ++jMu){
 
 
       if (iMu == jMu) {
@@ -251,15 +258,16 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
 
 //      if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
 //      if (! (jMu->isPFMuon() || jMu->isGlobalMuon() || jMu->isTrackerMuon())) continue;
-
-      if(!((iMu->isGlobalMuon()) & jMu->isGlobalMuon())) continue;
-      if(!((iMu->isSoftMuon()) & jMu->isSoftMuon())) continue;
-      if(!((abs(iMu->muonBestTrack()->dxy(pv)) < 0.1) & abs(jMu->muonBestTrack()->dxy(pv)) < 0.1))continue;
-      if(!((abs(iMu->muonBestTrack()->dz(pv)) < 0.1) & abs(jMu->muonBestTrack()->dz(pv)) < 0.1))continue;
-
+////////////////////////////////////////////////////////////////////////////////
+      if(!((iMu->isGlobalMuon() == true) && (jMu->isGlobalMuon() == true)))continue;
       if (iMu->pt() < 3.5 || jMu->pt() < 3.5) continue;
       if (abs(iMu->eta()) > 2.4 || abs(jMu->pt()) > 2.4) continue;
- 
+      if(!((abs(iMu->muonBestTrack()->dxy(pv)) < 0.1) && abs(jMu->muonBestTrack()->dxy(pv)) < 0.1))continue;
+      if(!((abs(iMu->muonBestTrack()->dz(pv)) < 0.1) && abs(jMu->muonBestTrack()->dz(pv)) < 0.1))continue;
+
+
+//////////////////////////////////////////////////////////////////////////////// 
+
       diMuIndex1_.push_back(tmpMu1);
       diMuIndex2_.push_back(tmpMu2);
 
@@ -268,13 +276,6 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
 
       KalmanVertexFitter fitter;
       TransientVertex tmpVertex = fitter.vertex(t_tks);
-
-//      if(!((ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()) > 0.05)))continue;//vertex probability > 5% - Para os candidatos a jPsi
-//      if(!(dimuCand.Pt() > 8.5))continue;
-//      if(!((dimuCand.M() < 2.6) & (dimuCand.M() > 3.6)))continue;
-//      const reco::TransientTrack &Ztt = transientTrackBuilder->build(para todos os muons->bestTrack());//adaptar para os 4 muons do Z
-//      vector<reco::TransientTrack> t_tksZ = {Ztt1, Ztt2, Ztt3, Ztt4};
-//      KamanVertexFitter fitterZ;
 
       if(tmpVertex.isValid()){
         diMuVtxIsValid_.push_back(1);
@@ -285,6 +286,24 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
         diMuNDF_.push_back(tmpVertex.degreesOfFreedom());
         diMuVtxProb_.push_back(ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()));
 
+        if(!((ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom())) > 0.05)){
+	  if(!((iMu->isSoftMuon(vtx) == true) && (jMu->isSoftMuon(vtx) == true)))continue;
+          if(!(iMu->charge() != jMu->charge()))continue;
+          jpsiMuVtxProb_.push_back(ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()));
+          TLorentzVector jpsiCand, Mu1, Mu2;
+          Mu1.SetPtEtaPhiM(iMu->pt(), iMu->eta(), iMu->phi(), 0.1057);
+          Mu2.SetPtEtaPhiM(jMu->pt(), jMu->eta(), jMu->phi(), 0.1057);
+          jpsiCand = Mu1 + Mu2;
+          if(!(jpsiCand.Pt() > 8.5))continue;
+          if(!((jpsiCand.M()< 2.6) && (jpsiCand.M() > 3.6)));
+          jpsi_mass_.push_back(jpsiCand.M());
+          indice1 = tmpMu1;
+          indice2 = tmpMu2;
+        }
+        else{
+          jpsiMuVtxProb_.push_back(-600);
+          jpsi_mass_.push_back(-20);
+        }
         // Distance and significance
         TVector3 disp(tmpVertex.position().x() - vtx.x(), tmpVertex.position().y() - vtx.y(), 0);
         TLorentzVector dimuCand, mu1, mu2;
