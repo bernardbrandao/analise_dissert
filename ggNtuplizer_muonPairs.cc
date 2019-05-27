@@ -38,11 +38,14 @@
 #include "RecoVertex/VertexTools/interface/VertexDistanceXY.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
 #include "TMath.h"
+#include "math.h"
 #include "Math/VectorUtil.h"
 #include "TVector3.h"
 #include <boost/foreach.hpp>
 #include <string>
-
+////////////////////
+#include <iostream>
+////////////////////
 using namespace std;
 
 // (local) variables associated with tree branches
@@ -94,9 +97,16 @@ vector<float>    diMu_mu1En_KinFit_;
 vector<float>    diMu_mu2En_KinFit_;
 vector<int>      diMu_mu1Charge_KinFit_;
 vector<int>      diMu_mu2Charge_KinFit_;
+////////////////////////////
 vector<float>    jpsi_mass_;
 vector<float>    jpsi_pt_;
 vector<float>    jpsiMuVtxProb_;
+vector<float>    Z_mass_;
+vector<float>    lead_mass_;
+vector<int>      diMuIndex3_;
+vector<int>      diMuIndex4_;
+TLorentzVector Mu1,Mu2, jpsiCand, lead_Cand, Mu3, Mu4, Z_Cand;
+float            R_Iso; 
 
 void ggNtuplizer::branchesMuonPairs(TTree* tree) {
 
@@ -151,7 +161,11 @@ void ggNtuplizer::branchesMuonPairs(TTree* tree) {
 ///////////////////////////////////////
   tree->Branch("jpsi_mass",   &jpsi_mass_);
   tree->Branch("jpsi_pt",    &jpsi_pt_);
+  tree->Branch("Z_mass",    &Z_mass_);
+  tree->Branch("lead_mass",   &lead_mass_);
   tree->Branch("jpsiMuVtxProb",    &jpsiMuVtxProb_);
+  tree->Branch("diMuIndex3",   &diMuIndex3_);
+  tree->Branch("diMuIndex4",   &diMuIndex4_);
 }
 
 void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es, math::XYZPoint& pv, reco::Vertex vtx) {
@@ -208,6 +222,10 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
   jpsi_mass_.clear();
   jpsi_pt_.clear();
   jpsiMuVtxProb_.clear();
+  Z_mass_.clear();
+  lead_mass_.clear();
+  diMuIndex3_.clear();
+  diMuIndex4_.clear();
   
   ndiMu_ = 0;
 
@@ -225,8 +243,15 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
     return;
   }
 
+  int nGoodMuons = 0;
   int tmpMu1 = 0;
   int tmpMu2 = 0;
+  int tmpMu3 = 0;
+  int tmpMu4 = 0;
+//  int indice1 = 0;
+//  int indice2 = 0;
+  edm::View<pat::Muon>::const_iterator a;
+  edm::View<pat::Muon>::const_iterator b;
 
   for (edm::View<pat::Muon>::const_iterator iMu = muonHandle->begin(); iMu != muonHandle->end(); ++iMu) {
 
@@ -261,24 +286,34 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
         diMuNDF_.push_back(tmpVertex.degreesOfFreedom());
         diMuVtxProb_.push_back(ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()));
 
-        if(!((ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom())) > 0.05)){
-          if ( (iMu->isGlobalMuon() || jMu->isGlobalMuon() )) continue;
-	  if ( (iMu->isSoftMuon(vtx)) && (jMu->isSoftMuon(vtx)) ) continue;
-          if (iMu->pt() < 3.5 || jMu->pt() < 3.5) continue;
-          if (abs(iMu->eta()) > 2.4 || abs(iMu->eta()) > 2.4)continue;
-          if( ((abs(iMu->muonBestTrack()->dxy(pv)) > 0.1) || abs(jMu->muonBestTrack()->dxy(pv)) > 0.1) ) continue;
-          if( ((abs(iMu->muonBestTrack()->dz(pv)) > 0.1) || abs(jMu->muonBestTrack()->dz(pv)) > 0.1) ) continue;
+        if( (ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom())) > 0.05f ){
+          if (!(iMu->isGlobalMuon() &&  jMu->isGlobalMuon() )) continue;
+//            cout << " Temos dois Global Muons no Evento " << endl;
+	  if (!(iMu->isSoftMuon(vtx)) && (jMu->isSoftMuon(vtx)) ) continue;
+//            cout << "--- Temos dois Soft Muons no Evento ---mu " << endl;
+	  if (iMu->pt() <= 3.5 || jMu->pt() <= 3.5) continue;
+//            cout << "------ Temos dois Muons com Pt maior que 3.5 ---mu " << endl;
+          if (abs(iMu->eta()) >= 2.4 || abs(iMu->eta()) >= 2.4)continue;
+//            cout << "--------- Temos dois Muons com eta menor que 2.4 ---mu " <<  endl;
+          if( ((abs(iMu->muonBestTrack()->dxy(pv)) >= 0.1) || abs(jMu->muonBestTrack()->dxy(pv)) >= 0.1) ) continue;
+//            cout << "------------ dxy -----------------------mu "  << endl;
+          if( ((abs(iMu->muonBestTrack()->dz(pv)) >= 0.1) || abs(jMu->muonBestTrack()->dz(pv)) >= 0.1) ) continue;
+//            cout << "--------------- dz -----------------------mu " << endl;
           if( (iMu->charge() == jMu->charge()) ) continue;
+//            cout << "--------------- muons com cargas opostas -----------------------mu " << endl;
           jpsiMuVtxProb_.push_back(ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()));
-          TLorentzVector jpsiCand, Mu1, Mu2;
           Mu1.SetPtEtaPhiM(iMu->pt(), iMu->eta(), iMu->phi(), 0.1057);
           Mu2.SetPtEtaPhiM(jMu->pt(), jMu->eta(), jMu->phi(), 0.1057);
           jpsiCand = Mu1 + Mu2;
-          if(!(jpsiCand.Pt() > 8.5))continue;
-          if(!((jpsiCand.M()< 2.6) && (jpsiCand.M() > 3.6)))continue;
+          if(jpsiCand.Pt() <= 8.5)continue;
+            cout << "--------------- Pt do jPsi -----------------------mu " << jpsiCand.Pt()  << endl;
+          if(!(jpsiCand.M() > 2.6) && (jpsiCand.M() < 3.6)) continue;
           jpsi_mass_.push_back(jpsiCand.M());
 //          indice1 = tmpMu1;
 //          indice2 = tmpMu2;
+          a = iMu;
+          b = jMu;
+          nGoodMuons++;
         }
         else{
           jpsiMuVtxProb_.push_back(-4);
@@ -525,7 +560,6 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
         diMuCosAlpha_KinFit_.push_back(-999.);
         diMu_Lxy_KinFit_.push_back(-999.);
         diMu_Rxy_KinFit_.push_back(-999.);
-        diMu_eLxy_KinFit_.push_back(-999.);
         diMu_SLxy_KinFit_.push_back(-999.);
         diMu_ctau_KinFit_.push_back(-999.);
         diMu_ctauErr_KinFit_.push_back(-999.);
@@ -535,5 +569,61 @@ void ggNtuplizer::fillMuonsPairs(const edm::Event& e, const edm::EventSetup& es,
     }
     tmpMu1++;
     tmpMu2 = tmpMu1;
+  }
+  if(nGoodMuons > 0){
+  
+    for (edm::View<pat::Muon>::const_iterator iMu = muonHandle->begin(); iMu != muonHandle->end(); ++iMu) {
+
+      // Build transientTrack
+      const reco::TransientTrack &tt1 = transientTrackBuilder->build(iMu->bestTrack());
+
+      for (edm::View<pat::Muon>::const_iterator jMu = iMu; jMu != muonHandle->end(); ++jMu) {
+        if (iMu == jMu) {
+          tmpMu4++;
+          continue;
+        }
+
+//        R_Iso = ( iMu->pfIsolationR04().sumChargedHadronPt + max( (0., iMu->pfIsolationR04().sumNeutralHadronEt) + iMu->pfIsolationR04().sumPhotonEt - iMu->pfIsolationR04().sumPUPt ) ) / ( (iMu->pt()) * (iMu->pt() ));
+//        if (!(R_Iso >= 0.35))continue;
+//          cout << "O valor de R_Iso: " << R_Iso << endl;
+        if( a == iMu || a == jMu || b == iMu || b == jMu )continue;
+//        cout << "O valor de a e: " << *a << " O valor de b e: " << *b << " O valor de iMu e: " << *iMu << " O valor de jMu e: " << *jMu << endl;
+        diMuIndex3_.push_back(tmpMu3);
+        diMuIndex4_.push_back(tmpMu4);
+
+//        if (tmpMu3 == indice1 || tmpMu3 == indice2 || tmpMu4 == indice1 || tmpMu4 == indice2 ) continue;  
+//          cout << "tmpMu3 = " << tmpMu3 << "  ----tmpMu4 = " << tmpMu4 << "   ----tmpMu1 = " << indice1 << "   -----tmpMu2 = " << indice2 << endl ;
+        if (!(iMu->isGlobalMuon() &&  jMu->isGlobalMuon() )) continue;
+//        cout << " Temos dois Global Muons no Evento " << endl;
+        if (!(iMu->isTightMuon(vtx)) && (jMu->isTightMuon(vtx)) ) continue;
+//        cout << "--- Temos dois Soft Muons no Evento ---mu " << endl;
+        if (abs(iMu->eta()) >= 2.4 || abs(iMu->eta()) >= 2.4)continue;
+//        cout << "--------- Temos dois Muons com eta menor que 2.4 ---mu " <<  endl;
+        if (!((iMu->pt() > 30 || jMu->pt() > 15)||(iMu->pt() > 15 || jMu->pt() > 30))) continue;
+//          cout << "------ Temos dois Muons com Pt maior que 30 e 15 GeV " << endl;
+        if( (iMu->charge() == jMu->charge()) ) continue;
+//        cout << "--------------- muons com cargas opostas -----------------------mu " << endl;
+//        ZVtxProb_.push_back(ChiSquaredProbability(tmpVertex.totalChiSquared(), tmpVertex.degreesOfFreedom()));
+        lead_Cand = Mu3 + Mu4;
+        Z_Cand = jpsiCand + Mu3 + Mu4;
+        if ( iMu->pt() > jMu->pt()){
+          Mu3.SetPtEtaPhiM(iMu->pt(), iMu->eta(), iMu->phi(), 0.1057);
+          Mu4.SetPtEtaPhiM(jMu->pt(), jMu->eta(), jMu->phi(), 0.1057);
+        }
+        else{
+          Mu4.SetPtEtaPhiM(iMu->pt(), iMu->eta(), iMu->phi(), 0.1057);
+          Mu3.SetPtEtaPhiM(jMu->pt(), jMu->eta(), jMu->phi(), 0.1057);
+        }
+        if(lead_Cand.M() >= 80)continue;
+          cout << "--------------- massa do lead_Cand ----------------------- " << lead_Cand.M()  << endl;
+//        if()
+          cout << "--------------- massa do Z ----------------------- " << Z_Cand.M()  << endl;
+        Z_mass_.push_back(Z_Cand.M());
+        lead_mass_.push_back(lead_Cand.M());
+      }
+      tmpMu4++;
+    }
+    tmpMu3++;
+    tmpMu4 = tmpMu3;
   }
 }
